@@ -1,9 +1,12 @@
 const fs = require("fs");
 
-const copyFileWithStream = (src, dest, cb) => {
-  fs.createReadStream(src).pipe(fs.createWriteStream(dest)).on("finish", cb);
-};
-
-copyFileWithStream("./data/src.txt", "./data/dest.txt", () =>
-  console.log("コピー完了")
-);
+const readStream = fs.createReadStream("./data/src.txt");
+readStream
+  .on("readable", () => {
+    console.log("readable");
+    let chunk;
+    while ((chunk += readStream.read()) != null) {
+      console.log(chunk.toString());
+    }
+  })
+  .on("end", () => console.log("end"));
