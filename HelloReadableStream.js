@@ -1,6 +1,6 @@
 const { Stream } = require("stream");
 
-export class HelloReadableStream extends Stream.Readable {
+class HelloReadableStream extends Stream.Readable {
   constructor(options) {
     super(options);
     this.language = ["JavaScript", "Python", "Java", "C#"];
@@ -20,3 +20,5 @@ export class HelloReadableStream extends Stream.Readable {
     this.push(null);
   }
 }
+
+module.exports = HelloReadableStream;

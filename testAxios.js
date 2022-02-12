@@ -11,8 +11,8 @@ const useAxios = async (path) => {
   return await axios.get(`http://localhost:3000/auth/${path}`);
 };
 
-useAxios("test").then((res) => {
-  console.log(res.data);
-});
+// useAxios("test").then((res) => {
+//   console.log(res.data);
+// });
 
 module.exports = useAxios;
