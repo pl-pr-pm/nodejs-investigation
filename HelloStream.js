@@ -25,7 +25,7 @@ class HelloReadableStream extends Stream.Readable {
 class HelloTransformStream extends Stream.Transform {
   remaining = "";
   constructor(optinos) {
-    super({ objectMode: false, ...optinos });
+    super({ objectMode: true, ...optinos });
   }
 
   _transform(chunk, encoding, callback) {
@@ -33,62 +33,61 @@ class HelloTransformStream extends Stream.Transform {
     const lines = (chunk + this.remaining).split(/\n/);
     this.remaining = lines.pop();
     for (const line of lines) {
-      // this.push({ message: line, delay: 0 });
-      this.push(line);
+      this.push({ message: line, delay: 0 });
+      // this.push(line);
     }
     callback();
   }
   _flush(callback) {
     console.log("_flush()");
-    // this.push({ message: this.remaining, delay: 0 });
-    this.push(this.remaining);
+    this.push({ message: this.remaining, delay: 0 });
+    // this.push(this.remaining);
     callback();
   }
 }
 
-class HelloWritableStream extends Stream.Writable {
-  constructor(optinos) {
-    super({ objectMode: false, ...optinos });
-    this.count = 0;
-  }
-  _write(chunk, encoding, callback) {
-    console.log("_write()");
-    const { message, delay } = chunk;
-    this.count += 1;
-    // this.senders.forEach((send) => send(count, message));
-    // this.sender(this.count, message);
-    // try {
-    //   callback(this.count, message);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+// class HelloWritableStream extends Stream.Writable {
+//   constructor(optinos) {
+//     super({ objectMode: true, ...optinos });
+//     this.count = 0;
+//   }
+//   _write(chunk, encoding, callback) {
+//     // console.log("_write()");
+//     const { message, delay } = chunk;
+//     this.count += 1;
+//     // this.senders.forEach((send) => send(count, message));
+//     // this.sender(this.count, message);
+//     // try {
+//     //   callback(this.count, message);
+//     // } catch (error) {
+//     //   console.log(error);
+//     // }
 
-    // this.count++;
+//     // this.count++;
 
-    // console.log(message);
-    // console.log(this.count);
-    // setTimeout(() => {
-    //   console.log(message);
-    //   callback();
-    // }, 0);
-    // console.log("message is ", message);
-  }
-}
+//     // console.log(message);
+//     // console.log(this.count);
+//     // setTimeout(() => {
+//     //   console.log(message);
+//     //   callback();
+//     // }, 0);
+//     // console.log("message is ", message);
+//   }
+// }
 
 module.exports = {
   HelloReadableStream,
   HelloTransformStream,
-  HelloWritableStream,
 };
-const readableStream = new HelloReadableStream({ highWaterMark: 0 });
-readableStream
-  .pipe(
-    new HelloTransformStream({
-      writableHighWaterMark: 0,
-      readableHighWaterMark: 0,
-    })
-  )
-  .pipe(new HelloWritableStream({ highWaterMark: 0 }));
+// const readableStream = new HelloReadableStream({ highWaterMark: 0 });
+// readableStream
+//   .pipe(
+//     new HelloTransformStream({
+//       writableHighWaterMark: 0,
+//       readableHighWaterMark: 0,
+//     })
+//   )
+//   .pipe(new HelloWritableStream({ highWaterMark: 0 }));
 
 // const readableStream = new HelloReadableStream({ highWaterMark: 64 });
 // readableStream
